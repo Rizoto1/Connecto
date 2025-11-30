@@ -40,9 +40,16 @@
     border-right:1px solid #dee2e6;
 }
 
-.btn-style {
+.btn-style-big {
     width: 100px;
     height: 40px;
+}
+.btn-style-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.btn-style {
     border-radius: 20px;
     background-color: transparent;
     color: #444344;
