@@ -8,12 +8,6 @@
 <html lang="sk">
 <head>
     <title><?= App\Configuration::APP_NAME ?></title>
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= $link->asset('favicons/apple-touch-icon.png') ?>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= $link->asset('favicons/favicon-32x32.png') ?>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= $link->asset('favicons/favicon-16x16.png') ?>">
-    <link rel="manifest" href="<?= $link->asset('favicons/site.webmanifest') ?>">
-    <link rel="shortcut icon" href="<?= $link->asset('favicons/favicon.ico') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -25,28 +19,32 @@
 <body>
 <nav class="navbar navbar-expand-sm bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<?= $link->url('home.index') ?>">
-            <img src="<?= $link->asset('images/vaiicko_logo.png') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Framework Logo">
-        </a>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="<?= $link->url('home.contact') ?>">Contact</a>
-            </li>
-        </ul>
-        <?php if ($user->isLoggedIn()) { ?>
-            <span class="navbar-text">Logged in user: <b><?= $user->getName() ?></b></span>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
+        <div class="row w-100 align-items-center">
+            <!-- Left: Logo -->
+            <div class="col-4 col-md-3 d-flex justify-content-start align-items-center">
+                <a class="navbar-brand" href="<?= $link->url('home.index') ?>" style="width:100px;">
+                    <img src="<?= $link->asset('images/connecto_logo.png') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Framework Logo" style="height:40px; width:100px; object-fit:contain;">
+                </a>
+            </div>
+            <!-- Center: Search bar -->
+            <div class="col-4 col-md-6 d-flex justify-content-center">
+                <form class="d-none d-sm-flex w-100" role="search" style="max-width:400px;">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+            </div>
+            <!-- Right: Profile or Login -->
+            <div class="col-4 col-md-3 d-flex justify-content-end align-items-center">
+                <?php if ($user->isLoggedIn()) { ?>
+                    <span class="navbar-text me-2 d-none d-md-block">
+                        <b><?= $user->getName() ?></b>
+                    </span>
                     <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
-                </li>
-            </ul>
-        <?php } else { ?>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
+                <?php } else { ?>
                     <a class="nav-link" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
-                </li>
-            </ul>
-        <?php } ?>
+                <?php } ?>
+            </div>
+        </div>
     </div>
 </nav>
 <div class="container-fluid mt-3">

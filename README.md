@@ -4,4 +4,10 @@ This is a school project for subject Development of intranet and intranet applic
 It aims to create a social media like web application where users can register, create posts, comment on posts, and like posts.
 The project is built using the VAII framework and follows the MVC architectural pattern.
 
+# TODO
 
+Possible search Engine: https://lucene.apache.org/core/https://lucene.apache.org/core/
+- Create basic topbar layout
+- Create sidebar layout
+- Create post window layout
+- create comment window layout
