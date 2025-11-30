@@ -27,14 +27,25 @@
                 </a>
             </div>
             <!-- Center: Search bar -->
-            <div class="col-4 col-md-6 d-flex justify-content-center">
+            <div class="col-4 col-md-6 d-flex justify-content-center align-items-center">
+                <!-- Desktop search bar -->
                 <form class="d-none d-sm-flex w-100" role="search" style="max-width:400px;">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
+                <!-- Mobile search icon -->
+                <button class="btn d-sm-none" type="button" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.442 1.398a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z"/>
+                    </svg>
+                </button>
             </div>
-            <!-- Right: Profile or Login -->
+            <!-- Right: Profile or Login + Sidebar toggle -->
             <div class="col-4 col-md-3 d-flex justify-content-end align-items-center">
+                <!-- Sidebar toggle button for mobile -->
+                <button class="btn btn-outline-secondary d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <?php if ($user->isLoggedIn()) { ?>
                     <span class="navbar-text me-2 d-none d-md-block">
                         <b><?= $user->getName() ?></b>
@@ -47,9 +58,61 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid mt-3">
-    <div class="web-content">
-        <?= $contentHTML ?>
+<!-- Mobile search modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form role="search">
+                    <input class="form-control mb-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary w-100" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sidebar for desktop and offcanvas for mobile -->
+<div class="d-flex">
+    <!-- Desktop sidebar -->
+    <div class="d-none d-md-flex flex-column justify-content-between align-items-center bg-light sidebar">
+        <div class="mt-3 w-100 d-flex flex-column align-items-center gap-3">
+            <button type="button" class="btn-style">Tlačidlo 1</button>
+            <button type="button" class="btn-style">Tlačidlo 2</button>
+            <button type="button" class="btn-style">Tlačidlo 3</button>
+        </div>
+        <div class="mb-3 w-100 d-flex flex-column align-items-center gap-3">
+            <button type="button" class="btn-style">Tlačidlo 4</button>
+            <button type="button" class="btn-style">Tlačidlo 5</button>
+        </div>
+    </div>
+    <!-- Offcanvas sidebar for mobile -->
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column justify-content-between align-items-center">
+            <div class="w-100 d-flex flex-column align-items-center gap-3">
+                <button type="button" class="btn-style">Tlačidlo 1</button>
+                <button type="button" class="btn-style">Tlačidlo 2</button>
+                <button type="button" class="btn-style">Tlačidlo 3</button>
+            </div>
+            <div class="w-100 d-flex flex-column align-items-center gap-3">
+                <button type="button" class="btn-style">Tlačidlo 4</button>
+                <button type="button" class="btn-style">Tlačidlo 5</button>
+            </div>
+        </div>
+    </div>
+    <div class="flex-grow-1">
+        <div class="container-fluid mt-3">
+            <div class="web-content">
+                <?= $contentHTML ?>
+            </div>
+        </div>
     </div>
 </div>
 </body>

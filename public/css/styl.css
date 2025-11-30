@@ -12,3 +12,55 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+/*
+    purple variations:
+    #3d155c
+    #581e83
+    #1e0d31
+    #1e0d31
+
+    #white variations:
+    #f3f3f3
+    #f2eef5
+    #e6e6e6
+    #f0f0f0
+
+    #black variations:
+    #444344
+    #2c2c2c
+    #221f25
+    #211b25
+ */
+
+.sidebar {
+    width:150px;
+    min-height:calc(100vh - 56px);
+    position:fixed;
+    border-right:1px solid #dee2e6;
+}
+
+.btn-style {
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: transparent;
+    color: #444344;
+    border-width: 1px;
+    border-style: solid;
+    border: #581e83;
+}
+
+.btn-style:hover {
+    background-color: #3d155c;
+    color: #e6e6e6;
+    border-style: solid;
+    border: #2c2c2c;
+}
+
+.btn-style:active {
+    background-color: #1e0d31;
+    color: #f3f3f3;
+    border-style: solid;
+    border: #221f25;
+}
