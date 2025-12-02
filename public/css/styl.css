@@ -1,3 +1,10 @@
+:root {
+    --btn-big-width: 100px;
+    --btn-big-height: 40px;
+    --btn-icon-width: 40px;
+    --sidebar-width: 150px;
+}
+
 .navbar {
     border-bottom: 1px solid grey;
 }
@@ -34,20 +41,27 @@
  */
 
 .sidebar {
-    width:150px;
+    width: var(--sidebar-width);
     min-height:calc(100vh - 56px);
     position:fixed;
     border-right:1px solid #dee2e6;
 }
 
+@media (min-width: 768px) {
+    .web-content {
+        margin-left: var(--sidebar-width);
+    }
+}
+
 .btn-style-big {
-    width: 100px;
-    height: 40px;
+    width: var(--btn-big-width);
+    height: var(--btn-big-height);
 }
 .btn-style-icon {
-    width: 40px;
-    height: 40px;
+    width: var(--btn-icon-width);
+    height: var(--btn-icon-width);
 }
+
 
 .btn-style {
     border-radius: 20px;

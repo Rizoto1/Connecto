@@ -50,9 +50,11 @@
                     <span class="navbar-text me-2 d-none d-md-block">
                         <b><?= $user->getName() ?></b>
                     </span>
-                    <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+
                 <?php } else { ?>
-                    <a class="nav-link ms-2" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
+                        <button class="btn-style btn-style-icon" type="submit">
+                            <img src="<?= $link->asset('images/unsigned_icon.png') ?>" style="width: 30px; height: 30px" alt="User">
+                        </button>
                 <?php } ?>
             </div>
         </div>
@@ -82,7 +84,16 @@
     <!-- Desktop sidebar -->
     <div class="d-none d-md-flex flex-column justify-content-between align-items-center bg-light sidebar">
         <div class="mt-3 w-100 d-flex flex-column align-items-center gap-3">
-            <button type="button" class="btn-style btn-style-big">Tlačidlo 1</button>
+            <?php if ($user->isLoggedIn()) { ?>
+                <button class="btn-style btn-style-big" type="submit">
+                    <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+                </button>
+            <?php } else { ?>
+                <button class="btn-style btn-style-big" type="submit">
+                    <a class="nav-link ms-2" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
+                </button>
+            <?php } ?>
+
             <button type="button" class="btn-style btn-style-big">Tlačidlo 2</button>
             <button type="button" class="btn-style btn-style-big">Tlačidlo 3</button>
         </div>
@@ -99,8 +110,15 @@
         </div>
         <div class="offcanvas-body d-flex flex-column justify-content-between align-items-center">
             <div class="w-100 d-flex flex-column align-items-center gap-3">
-                <button type="button" class="btn-style btn-style-big">Tlačidlo 1</button>
-                <button type="button" class="btn-style btn-style-big">Tlačidlo 2</button>
+                <?php if ($user->isLoggedIn()) { ?>
+                    <button class="btn-style btn-style-big" type="submit">
+                        <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+                    </button>
+                <?php } else { ?>
+                    <button class="btn-style btn-style-big" type="submit">
+                        <a class="nav-link ms-2" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
+                    </button>
+                <?php } ?>
                 <button type="button" class="btn-style btn-style-big">Tlačidlo 3</button>
             </div>
             <div class="w-100 d-flex flex-column align-items-center gap-3">
