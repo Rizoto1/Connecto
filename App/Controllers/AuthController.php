@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Configuration;
+use App\Models\User;
+use DateTime;
 use Exception;
 use Framework\Core\BaseController;
 use Framework\Http\Request;
@@ -59,16 +61,17 @@ class AuthController extends BaseController
 
     public function register(Request $request): Response
     {
-        $registered = null;
         if ($request->hasValue('submit')) {
-            $registered = $this->app->getAuthenticator()->register($request->value('username'), $request->value('password'));
-            if ($registered) {
-                return $this->redirect($this->url("admin.index"));
-            }
+            $user = new User();
+            $user->setName($request->value('username'));
+            $user->setPasswordHash(password_hash($request->value('password'), PASSWORD_BCRYPT));
+            $user->setEmail($request->value('email'));
+            $user->setCreatedAt(new DateTime());
+
+            $user->save();
         }
 
-        $message = $registered === false ? 'Username already taken' : null;
-        return $this->html(compact("message"));
+        return $this->html();
     }
 
     /**
