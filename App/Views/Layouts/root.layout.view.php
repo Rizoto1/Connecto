@@ -19,7 +19,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-sm bg-light">
+<nav class="navbar navbar-expand-sm bg-light bg-dark">
     <div class="container-fluid">
         <div class="row w-100 align-items-center">
             <!-- Sidebar toggle button for mobile -->
@@ -93,7 +93,6 @@
                     <a class="nav-link ms-2" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
                 </button>
             <?php } ?>
-
             <button type="button" class="btn-style btn-style-big">Tlačidlo 2</button>
             <button type="button" class="btn-style btn-style-big">Tlačidlo 3</button>
         </div>
@@ -119,6 +118,7 @@
                         <a class="nav-link ms-2" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
                     </button>
                 <?php } ?>
+                <button type="button" class="btn-style btn-style-big">Tlačidlo 2</button>
                 <button type="button" class="btn-style btn-style-big">Tlačidlo 3</button>
             </div>
             <div class="w-100 d-flex flex-column align-items-center gap-3">

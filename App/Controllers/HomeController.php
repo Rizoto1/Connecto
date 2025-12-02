@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Framework\Core\BaseController;
 use Framework\Http\Request;
 use Framework\Http\Responses\Response;
+use Framework\Http\Responses\RedirectResponse;
 
 /**
  * Class HomeController
@@ -39,7 +40,7 @@ class HomeController extends BaseController
      */
     public function index(Request $request): Response
     {
-        return $this->html();
+        return new RedirectResponse($this->url('post.index'));
     }
 
     /**
