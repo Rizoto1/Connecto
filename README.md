@@ -11,3 +11,5 @@ Possible search Engine: https://lucene.apache.org/core/https://lucene.apache.org
 - Create sidebar layout
 - Create post window layout
 - create comment window layout
+- add register view
+- add login view
