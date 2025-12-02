@@ -57,6 +57,20 @@ class AuthController extends BaseController
         return $this->html(compact("message"));
     }
 
+    public function register(Request $request): Response
+    {
+        $registered = null;
+        if ($request->hasValue('submit')) {
+            $registered = $this->app->getAuthenticator()->register($request->value('username'), $request->value('password'));
+            if ($registered) {
+                return $this->redirect($this->url("admin.index"));
+            }
+        }
+
+        $message = $registered === false ? 'Username already taken' : null;
+        return $this->html(compact("message"));
+    }
+
     /**
      * Logs out the current user.
      *
