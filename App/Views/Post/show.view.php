@@ -5,7 +5,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2><?= htmlspecialchars($post->getTitle()) ?></h2>
-        <a class="btn btn-secondary" href="<?= $link->url('index') ?>">Späť na zoznam</a>
+        <a class="btn btn-secondary" href="<?= $link->url('posts') ?>">Späť na zoznam</a>
     </div>
     <div class="text-muted mb-3">Vytvorené: <?= htmlspecialchars($post->getCreatedAt()) ?></div>
     <div class="card">
@@ -33,7 +33,7 @@ $old = $data['old'] ?? [];
         </div>
     <?php endif; ?>
 
-    <form method="post" action="<?= $link->url('create') ?>">
+    <form method="post" action="<?= $link->url('posts.create') ?>">
         <div class="mb-3">
             <label for="title" class="form-label">Nadpis</label>
             <input type="text" class="form-control" id="title" name="title" value="<?= htmlspecialchars($old['title'] ?? '') ?>" required>
@@ -44,7 +44,8 @@ $old = $data['old'] ?? [];
         </div>
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Uložiť</button>
-            <a href="<?= $link->url('index') ?>" class="btn btn-secondary">Späť</a>
+            <a href="<?= $link->url('posts') ?>" class="btn btn-secondary">Späť</a>
         </div>
     </form>
 </div>
+

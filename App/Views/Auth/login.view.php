@@ -27,7 +27,7 @@
                                    placeholder="Password" required>
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-primary" type="submit" name="submit">Log in
+                            <button class="btn-style btn-style-big" type="submit" name="submit">Log in
                             </button>
                         </div>
                     </form>
