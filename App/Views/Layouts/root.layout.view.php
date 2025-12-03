@@ -47,6 +47,10 @@
             <!-- Right: Profile or Login + Sidebar toggle -->
             <div class="col-4 col-md-3 d-flex justify-content-end align-items-center flex-row flex-nowrap">
                 <?php if ($user->isLoggedIn()) { ?>
+                    <?php $avatar = $user->getAvatar(); ?>
+                    <?php if (!empty($avatar)) { ?>
+                        <img src="<?= $link->asset($avatar) ?>" alt="Avatar" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" class="me-2" />
+                    <?php } ?>
                     <span class="navbar-text me-2 d-none d-md-block">
                         <b><?= $user->getName() ?></b>
                     </span>
@@ -90,7 +94,7 @@
                     <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
                 </button>
                 <button class="btn-style btn-style-big" type="submit">
-                    <a class="btn-style btn-style-big w-75 text-center" href="<?= $link->url('posts.create') ?>">Pridať príspevok</a>
+                    <a class="nav-link" href="<?= $link->url('post.create') ?>">Pridať príspevok</a>
                 </button>
             <?php } else { ?>
                 <button class="btn-style btn-style-big" type="submit">
@@ -119,7 +123,7 @@
                         <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
                     </button>
                     <button class="btn-style btn-style-big" type="submit">
-                        <a class="btn-style btn-style-big w-75 text-center" href="<?= $link->url('posts.create') ?>">Pridať príspevok</a>
+                        <a class="btn-style btn-style-big w-75 text-center" href="<?= $link->url('post.create') ?>">Pridať príspevok</a>
                     </button>
                 <?php } else { ?>
                     <button class="btn-style btn-style-big" type="submit">

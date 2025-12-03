@@ -6,6 +6,7 @@ use App\Models\Post;
 use Framework\Core\BaseController;
 use Framework\Http\Request;
 use Framework\Http\Responses\Response;
+use Framework\Http\Responses\JsonResponse;
 
 class PostController extends BaseController
 {
@@ -17,9 +18,7 @@ class PostController extends BaseController
 
     public function index(Request $request): Response
     {
-        // List posts
-        //orderBy: 'createdAt DESC'
-        $posts = Post::getAll();
+        $posts = Post::getAll(orderBy: 'createdAt DESC');
         return $this->html(['posts' => $posts]);
     }
 
@@ -36,6 +35,39 @@ class PostController extends BaseController
             if (empty(trim($post->getContent() ?? ''))) {
                 $errors[] = 'Content is required';
             }
+
+            // Handle image upload if present
+            $uploaded = $request->file('image');
+            if ($uploaded !== null && $uploaded->isOk()) {
+                $type = strtolower($uploaded->getType());
+                if (!str_starts_with($type, 'image/')) {
+                    $errors[] = 'Uploaded file must be an image';
+                } else {
+                    // Ensure uploads directory exists under public
+                    $uploadsDir = __DIR__ . '/../../public/uploads';
+                    if (!is_dir($uploadsDir)) {
+                        @mkdir($uploadsDir, 0777, true);
+                    }
+                    // Generate a safe unique filename
+                    $ext = pathinfo($uploaded->getName(), PATHINFO_EXTENSION);
+                    $safeExt = preg_replace('/[^a-z0-9]+/i', '', $ext) ?: 'img';
+                    $fileName = uniqid('post_', true) . '.' . $safeExt;
+                    $targetPath = $uploadsDir . DIRECTORY_SEPARATOR . $fileName;
+                    if ($uploaded->store($targetPath)) {
+                        // Save relative path for serving via LinkGenerator asset
+                        $post->setImage('uploads/' . $fileName);
+                    } else {
+                        $errors[] = 'Failed to store uploaded image';
+                    }
+                }
+            } elseif ($uploaded !== null && !$uploaded->isOk()) {
+                // If a file was attempted but failed, include error message unless it's "no file"
+                $msg = $uploaded->getErrorMessage();
+                if ($uploaded->getError() !== UPLOAD_ERR_NO_FILE && $msg) {
+                    $errors[] = $msg;
+                }
+            }
+
             if ($errors) {
                 return $this->html(['errors' => $errors, 'old' => $request->post()], 'create');
             }

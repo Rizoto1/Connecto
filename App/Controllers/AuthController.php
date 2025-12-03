@@ -117,13 +117,46 @@ class AuthController extends BaseController
                 return $this->html(compact('message'));
             }
 
-            // Passed validation – create user
             $user = new User();
             $user->setName((string)$request->value('username'));
             $user->setPasswordHash(password_hash($password, PASSWORD_BCRYPT));
             $user->setEmail($email);
             // Set createdAt as string (ISO 8601)
             $user->setCreatedAt(date('c'));
+
+            // Optional avatar upload
+            $errors = [];
+            $uploaded = $request->file('avatar');
+            if ($uploaded !== null && $uploaded->isOk()) {
+                $type = strtolower($uploaded->getType());
+                if (!str_starts_with($type, 'image/')) {
+                    $errors[] = 'Nahraný súbor musí byť obrázok.';
+                } else {
+                    $uploadsDir = __DIR__ . '/../../public/uploads';
+                    if (!is_dir($uploadsDir)) {
+                        @mkdir($uploadsDir, 0777, true);
+                    }
+                    $ext = pathinfo($uploaded->getName(), PATHINFO_EXTENSION);
+                    $safeExt = preg_replace('/[^a-z0-9]+/i', '', $ext) ?: 'img';
+                    $fileName = uniqid('avatar_', true) . '.' . $safeExt;
+                    $targetPath = $uploadsDir . DIRECTORY_SEPARATOR . $fileName;
+                    if ($uploaded->store($targetPath)) {
+                        $user->setAvatar('uploads/' . $fileName);
+                    } else {
+                        $errors[] = 'Nepodarilo sa uložiť profilový obrázok.';
+                    }
+                }
+            } elseif ($uploaded !== null && !$uploaded->isOk()) {
+                $msg = $uploaded->getErrorMessage();
+                if ($uploaded->getError() !== UPLOAD_ERR_NO_FILE && $msg) {
+                    $errors[] = $msg;
+                }
+            }
+
+            if ($errors) {
+                $message = implode("\n", $errors);
+                return $this->html(compact('message'));
+            }
 
             $user->save();
 

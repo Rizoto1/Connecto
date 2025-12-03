@@ -14,7 +14,9 @@ class Post extends Model
     protected ?int $id = null;
     protected ?string $title = null;
     protected ?string $content = null;
+    protected ?string $image = null; // Add image path/filename
     protected ?string $createdAt = null; // DATETIME stored as string
+
 
     // Getters
     public function getId(): ?int
@@ -33,6 +35,10 @@ class Post extends Model
     {
         return $this->createdAt;
     }
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
 
     // Setters
 
@@ -50,5 +56,9 @@ class Post extends Model
     {
         $this->createdAt = $createdAt;
     }
-}
 
+    public function setImage(?string $image): void
+    {
+        $this->image = $image;
+    }
+}

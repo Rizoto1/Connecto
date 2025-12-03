@@ -13,6 +13,7 @@ class User extends Model implements IIdentity
     protected ?string $passwordHash = null;
     protected ?string $email = null;
     protected ?string $createdAt = null;
+    protected ?string $avatar = null;
 
 
     public function getId(): ?int
@@ -58,5 +59,15 @@ class User extends Model implements IIdentity
     public function getPasswordHash(): ?string
     {
         return $this->passwordHash;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
     }
 }
