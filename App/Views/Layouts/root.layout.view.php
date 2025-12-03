@@ -19,7 +19,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-sm bg-light bg-dark">
+<nav class="navbar navbar-expand-sm bg-light">
     <div class="container-fluid">
         <div class="row w-100 align-items-center">
             <!-- Sidebar toggle button for mobile -->
