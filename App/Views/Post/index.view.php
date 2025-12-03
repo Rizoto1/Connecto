@@ -5,7 +5,6 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Príspevky</h2>
-        <a class="btn btn-primary" href="<?= $link->url('posts.create') ?>">Pridať príspevok</a>
     </div>
 
     <?php if (empty($posts)): ?>
@@ -18,9 +17,7 @@
                     <form method="post" action="<?= $link->url('posts.delete') ?>" class="mt-2" onsubmit="return confirm('Naozaj zmazať?');">
                         <button type="submit" class="btn btn-sm btn-outline-danger">Zmazať</button>
                     </form>
-                </a>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 </div>
-

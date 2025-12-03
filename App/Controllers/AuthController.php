@@ -70,7 +70,7 @@ class AuthController extends BaseController
                 if (password_verify($password, $user->getPasswordHash())) {
                     // Manually set identity in session to work with SessionAuthenticator/DummyAuthenticator
                     $this->app->getSession()->set(Configuration::IDENTITY_SESSION_KEY, $user);
-                    return $this->redirect($this->url('admin.index'));
+                    return $this->redirect($this->url('post.index'));
                 }
             }
 
@@ -80,7 +80,7 @@ class AuthController extends BaseController
             if ($auth !== null) {
                 // For backward compatibility: some authenticators may expect "username"; we pass email here.
                 if ($auth->login($email, $password)) {
-                    return $this->redirect($this->url('admin.index'));
+                    return $this->redirect($this->url('post.index'));
                 }
             }
 

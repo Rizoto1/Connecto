@@ -85,8 +85,12 @@
     <div class="d-none d-md-flex flex-column justify-content-between align-items-center bg-light sidebar">
         <div class="mt-3 w-100 d-flex flex-column align-items-center gap-3">
             <?php if ($user->isLoggedIn()) { ?>
+                <!-- Add Post button visible only when logged in -->
                 <button class="btn-style btn-style-big" type="submit">
                     <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+                </button>
+                <button class="btn-style btn-style-big" type="submit">
+                    <a class="btn-style btn-style-big w-75 text-center" href="<?= $link->url('posts.create') ?>">Pridať príspevok</a>
                 </button>
             <?php } else { ?>
                 <button class="btn-style btn-style-big" type="submit">
@@ -110,8 +114,12 @@
         <div class="offcanvas-body d-flex flex-column justify-content-between align-items-center">
             <div class="w-100 d-flex flex-column align-items-center gap-3">
                 <?php if ($user->isLoggedIn()) { ?>
+                    <!-- Add Post button visible only when logged in (mobile) -->
                     <button class="btn-style btn-style-big" type="submit">
                         <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+                    </button>
+                    <button class="btn-style btn-style-big" type="submit">
+                        <a class="btn-style btn-style-big w-75 text-center" href="<?= $link->url('posts.create') ?>">Pridať príspevok</a>
                     </button>
                 <?php } else { ?>
                     <button class="btn-style btn-style-big" type="submit">
