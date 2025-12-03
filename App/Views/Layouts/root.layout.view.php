@@ -14,7 +14,7 @@
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="<?= $link->asset('css/styl.css') ?>">
-    <script src="<?= $link->asset('js/script.js') ?>"></script>
+    <script src="<?= $link->asset('js/script.js') ?>" type="module"></script>
 </head>
 
 <body>

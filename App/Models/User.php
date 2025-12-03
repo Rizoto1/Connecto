@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use DateTime;
 use Framework\Core\IIdentity;
 use Framework\Core\Model;
 
@@ -13,7 +12,7 @@ class User extends Model implements IIdentity
     protected ?string $name = null;
     protected ?string $passwordHash = null;
     protected ?string $email = null;
-    protected ?DateTime $createdAt = null;
+    protected ?string $createdAt = null;
 
 
     public function getId(): ?int
@@ -26,7 +25,7 @@ class User extends Model implements IIdentity
         return $this->email;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
@@ -46,7 +45,7 @@ class User extends Model implements IIdentity
         $this->email = $email;
     }
 
-    public function setCreatedAt(DateTime $createdAt): void
+    public function setCreatedAt(?string $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

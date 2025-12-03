@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Configuration;
 use App\Models\User;
-use DateTime;
 use Exception;
 use Framework\Core\BaseController;
 use Framework\Http\Request;
@@ -62,13 +61,42 @@ class AuthController extends BaseController
     public function register(Request $request): Response
     {
         if ($request->hasValue('submit')) {
+            $email = trim((string)$request->value('email'));
+            $password = (string)$request->value('password');
+
+            // 0) Robust email validation: must be a full address (e.g., aaa@gmail.com)
+            $basicValid = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+            $shapeValid = (bool)preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/', $email);
+            if (!$basicValid || !$shapeValid) {
+                $message = "Neplatný e-mail – zadajte úplnú adresu (napr. meno@example.com).";
+                return $this->html(compact('message'));
+            }
+
+            // 1) Check if user with this email already exists
+            if (User::getCount('email = ?', [$email]) > 0) {
+                $message = 'Užívateľ s touto e-mailovou adresou už existuje.';
+                return $this->html(compact('message'));
+            }
+
+            // 2) Validate password strength: min 8 chars, at least one digit and one special (non-alphanumeric) char
+            $passwordOk = (bool)preg_match('/^(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,}$/', $password);
+            if (!$passwordOk) {
+                $message = 'Heslo je neplatné – musí mať aspoň 8 znakov a obsahovať číslo aj špeciálny znak (napr. . , ! ?).';
+                return $this->html(compact('message'));
+            }
+
+            // Passed validation – create user
             $user = new User();
-            $user->setName($request->value('username'));
-            $user->setPasswordHash(password_hash($request->value('password'), PASSWORD_BCRYPT));
-            $user->setEmail($request->value('email'));
-            $user->setCreatedAt(new DateTime());
+            $user->setName((string)$request->value('username'));
+            $user->setPasswordHash(password_hash($password, PASSWORD_BCRYPT));
+            $user->setEmail($email);
+            // Set createdAt as string (ISO 8601)
+            $user->setCreatedAt(date('c'));
 
             $user->save();
+
+            // Optional: redirect to login after successful registration
+            return $this->redirect(Configuration::LOGIN_URL);
         }
 
         return $this->html();

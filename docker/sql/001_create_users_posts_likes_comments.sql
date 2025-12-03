@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` VARCHAR(255) NOT NULL,
   `passwordHash` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  `createdAt` DATETIME NOT NULL,
+  `createdAt` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_users_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,5 +46,3 @@ CREATE TABLE IF NOT EXISTS `comments` (
   CONSTRAINT `fk_comments_user` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_comments_post` FOREIGN KEY (`postId`) REFERENCES `posts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
