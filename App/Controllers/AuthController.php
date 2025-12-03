@@ -46,16 +46,48 @@ class AuthController extends BaseController
      */
     public function login(Request $request): Response
     {
-        $logged = null;
+        $message = null;
+
         if ($request->hasValue('submit')) {
-            $logged = $this->app->getAuthenticator()->login($request->value('username'), $request->value('password'));
-            if ($logged) {
-                return $this->redirect($this->url("admin.index"));
+            // Read email and password from request
+            $email = trim((string)$request->value('email'));
+            $password = (string)$request->value('password');
+
+            // Basic sanity check for email input
+            $basicValid = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+            $shapeValid = (bool)preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/', $email);
+            if (!$basicValid || !$shapeValid) {
+                $message = 'Neplatný e-mail – zadajte úplnú adresu (napr. meno@example.com).';
+                return $this->html(compact('message'));
             }
+
+            // Try to find user by email (limit 1)
+            $users = User::getAll('email = ?', [$email], null, 1);
+            $user = $users[0] ?? null;
+
+            if ($user instanceof User && $user->getPasswordHash() !== null) {
+                // Verify password against stored hash
+                if (password_verify($password, $user->getPasswordHash())) {
+                    // Manually set identity in session to work with SessionAuthenticator/DummyAuthenticator
+                    $this->app->getSession()->set(Configuration::IDENTITY_SESSION_KEY, $user);
+                    return $this->redirect($this->url('admin.index'));
+                }
+            }
+
+            // If DB-based auth failed, optionally fall back to configured authenticator (e.g., DummyAuthenticator)
+            // This allows logging in with hardcoded credentials if enabled in configuration.
+            $auth = $this->app->getAuthenticator();
+            if ($auth !== null) {
+                // For backward compatibility: some authenticators may expect "username"; we pass email here.
+                if ($auth->login($email, $password)) {
+                    return $this->redirect($this->url('admin.index'));
+                }
+            }
+
+            $message = 'Bad email or password';
         }
 
-        $message = $logged === false ? 'Bad username or password' : null;
-        return $this->html(compact("message"));
+        return $this->html(compact('message'));
     }
 
     public function register(Request $request): Response

@@ -16,8 +16,8 @@
                     </div>
                     <form class="form-signin" method="post" action="<?= $link->url("login") ?>">
                         <div class="form-label-group mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input name="username" type="text" id="username" class="form-control" placeholder="Username"
+                            <label for="email" class="form-label">E-mail</label>
+                            <input name="email" type="text" id="email" class="form-control" placeholder="Email"
                                    required autofocus>
                         </div>
                         <div class="form-label-group mb-3">
