@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Configuration;
 use App\Models\User;
+use App\Models\Post;
 use Framework\Core\BaseController;
 use Framework\Http\Request;
 use Framework\Http\Responses\Response;
@@ -120,5 +121,33 @@ class ProfileController extends BaseController
             'success' => $success,
         ];
         return $this->html($data);
+    }
+
+    public function post(Request $request): Response
+    {
+        // Ensure the user is logged in
+        if (!$this->user->isLoggedIn()) {
+            return $this->redirect(Configuration::LOGIN_URL);
+        }
+
+        /** @var User $identity */
+        $identity = $this->user->getIdentity();
+        $uid = $identity?->getId();
+
+        $posts = [];
+        if ($uid !== null) {
+            try {
+                // Preferred: filter by author
+                $posts = Post::getAll('userId = ?', [$uid], 'createdAt DESC');
+            } catch (\Throwable $e) {
+                // Fallback if the column does not exist in DB yet
+                $posts = Post::getAll(orderBy: 'createdAt DESC');
+            }
+        }
+
+        return $this->html([
+            'user' => $identity,
+            'posts' => $posts,
+        ], 'post');
     }
 }

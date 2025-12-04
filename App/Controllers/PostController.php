@@ -28,6 +28,12 @@ class PostController extends BaseController
         if ($request->isPost()) {
             $post = new Post();
             $post->setFromRequest($request);
+            // Explicitly set author to the currently logged-in user (if any),
+            // overriding any client-provided userId field for security.
+            $uid = $this->user->getIdentity()?->getId();
+            if (is_int($uid)) {
+                $post->setUserId($uid);
+            }
             // Basic validation
             $errors = [];
             if (empty(trim($post->getTitle() ?? ''))) {

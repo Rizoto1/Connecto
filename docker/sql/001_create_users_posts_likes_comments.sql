@@ -21,11 +21,14 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Posts table
 CREATE TABLE IF NOT EXISTS `posts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `userId` INT UNSIGNED NULL,
   `title` VARCHAR(255) NOT NULL,
   `content` TEXT NOT NULL,
   `image` VARCHAR(255) NULL,
   `createdAt` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_posts_userId` (`userId`),
+  CONSTRAINT `fk_posts_user` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Likes table (user likes a post)
