@@ -7,9 +7,14 @@ The project is built using the VAII framework and follows the MVC architectural 
 # TODO
 
 Possible search Engine: https://lucene.apache.org/core/https://lucene.apache.org/core/
-- Create basic topbar layout
-- Create sidebar layout
-- Create post window layout
 - create comment window layout
-- add register view
-- redo login view
+- fix so that only logged in users can see and add comments
+- add likes to posts
+- add user profiles
+- add search functionality
+- improve UI/UX design
+- add ajax calls for better user experience ( posts, comments)
+- add usernames to posts and comments
+- add timestamps to posts and comments
+- add the ability for logged in users to edit and delete their posts and comments
+

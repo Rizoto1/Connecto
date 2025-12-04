@@ -40,11 +40,37 @@
                 <div class="comment-window" aria-hidden="true">
                     <div class="header">Komentáre</div>
                     <div class="body">
-                        <p>Zatiaľ žiadne komentáre.</p>
+                        <?php
+                        // Load related comments for this post using the Model relationship API
+                        try {
+                            $comments = $post->getAllRelated(\App\Models\Comment::class);
+                        } catch (\Exception $e) {
+                            $comments = [];
+                        }
+                        ?>
+                        <?php if (!empty($comments)): ?>
+                            <ul style="list-style:none; padding:0; margin:0;">
+                                <?php foreach ($comments as $comment): ?>
+                                    <li style="border-top:1px solid #eee; padding:0.5rem 0;">
+                                        <div style="font-size:0.9rem; color:#333;">
+                                            <?= nl2br(htmlspecialchars($comment->getContent() ?? '')) ?>
+                                        </div>
+                                        <div style="font-size:0.8rem; color:#888;">
+                                            <?= htmlspecialchars($comment->getCreatedAt() ?? '') ?>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p>Zatiaľ žiadne komentáre.</p>
+                        <?php endif; ?>
                     </div>
                     <div class="footer">
-                        <input type="text" placeholder="Napíšte komentár..." style="flex:1;" />
-                        <button type="button">Odoslať</button>
+                        <form action="<?= $link->url('addComment') ?>" method="post" style="display:flex; gap:0.5rem; align-items:center; width:100%;">
+                            <input type="hidden" name="postId" value="<?= (int)($post->getId() ?? 0) ?>" />
+                            <input type="text" name="content" placeholder="Napíšte komentár..." style="flex:1;" />
+                            <button type="submit">Odoslať</button>
+                        </form>
                     </div>
                 </div>
             </article>

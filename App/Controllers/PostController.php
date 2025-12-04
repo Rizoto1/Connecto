@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment; // added
 use Framework\Core\BaseController;
 use Framework\Http\Request;
 use Framework\Http\Responses\Response;
@@ -96,6 +97,50 @@ class PostController extends BaseController
         if ($post) {
             $post->delete();
         }
+        return $this->redirect($this->url('index'));
+    }
+
+    // New action: add a comment to a post
+    public function addComment(Request $request): Response
+    {
+        if (!$request->isPost()) {
+            return $this->redirect($this->url('index'));
+        }
+
+        $postId = (int)($request->post()['postId'] ?? 0);
+        $content = trim((string)($request->post()['content'] ?? ''));
+
+        $errors = [];
+        if ($postId <= 0 || Post::getOne($postId) === null) {
+            $errors[] = 'Invalid post';
+        }
+        if ($content === '') {
+            $errors[] = 'Komentár nemôže byť prázdny';
+        }
+
+        if ($errors) {
+            // Simple approach: redirect back to index; in future we can flash errors
+            return $this->redirect($this->url('index'));
+        }
+
+        /** @var Comment $comment */
+        $comment = new Comment();
+        $comment->setPostId($postId);
+        // attach user if logged in
+        if ($this->user->isLoggedIn()) {
+            $uid = $this->user->getIdentity()?->getId();
+            if (is_int($uid)) {
+                $comment->setUserId($uid);
+            }
+        }
+        $comment->setContent($content);
+        // createdAt column is present per schema
+        if (method_exists($comment, 'setCreatedAt')) {
+            $comment->setCreatedAt(date('Y-m-d H:i:s'));
+        }
+        $comment->save();
+
+        // Redirect back to posts list (preserves controller default index)
         return $this->redirect($this->url('index'));
     }
 }
