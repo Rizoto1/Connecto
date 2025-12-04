@@ -11,3 +11,12 @@
     height: auto;
     border-radius: 15px;
 }
+
+/* Smooth shift for post items */
+.post-item {
+    transition: transform 200ms ease;
+}
+
+.post-item.shift-left {
+    transform: translateX(-20px);
+}

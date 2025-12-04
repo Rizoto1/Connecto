@@ -15,7 +15,7 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="<?= $link->asset('css/styl.css') ?>">
     <link rel="stylesheet" href="<?= $link->asset('css/post.css') ?>">
-    <script src="<?= $link->asset('js/script.js') ?>" type="module"></script>
+    <script src="<?= $link->asset('js/script.js') ?>"></script>
 </head>
 
 <body>

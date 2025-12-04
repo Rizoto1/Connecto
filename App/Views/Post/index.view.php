@@ -23,9 +23,9 @@
                     </div>
                     <!-- Toolbar under the image -->
                     <div class="post-toolbar" style="display:flex; gap:0.5rem; align-items:center; margin-top:0.5rem;">
-                        <a href="<?= htmlspecialchars($link->url('show', ['id' => $post->getId()])) ?>">
+                        <button type="button" class="btn btn-share" >
                             <img src="<?= $link->asset('images/comment_icon.png') ?>" alt="comments" style="width:16px; height:16px;" />
-                        </a>
+                        </button>
                         <button type="button" class="btn btn-share" >
                             <img src="<?= $link->asset('images/share_icon.png') ?>" alt="share" style="width:16px; height:16px;" />
                         </button>
