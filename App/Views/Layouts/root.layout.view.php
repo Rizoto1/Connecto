@@ -18,7 +18,7 @@
     <script src="<?= $link->asset('js/script.js') ?>"></script>
 </head>
 
-<body>
+<body data-logged-in="<?= $user->isLoggedIn() ? '1' : '0' ?>" data-login-url="<?= htmlspecialchars(App\Configuration::LOGIN_URL) ?>">
 
 <nav class="navbar navbar-expand-sm bg-light">
     <div class="container-fluid">

@@ -8,7 +8,6 @@ The project is built using the VAII framework and follows the MVC architectural 
 
 Possible search Engine: https://lucene.apache.org/core/https://lucene.apache.org/core/
 - create comment window layout
-- fix so that only logged in users can see and add comments
 - add likes to posts
 - add user profiles
 - add search functionality

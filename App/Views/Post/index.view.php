@@ -1,6 +1,7 @@
 <?php
 /** @var \Framework\Support\LinkGenerator $link */
 /** @var \App\Models\Post[] $posts */
+/** @var \Framework\Auth\AppUser $user */
 ?>
 <h2>Zoznam príspevkov</h2>
 
@@ -66,11 +67,17 @@
                         <?php endif; ?>
                     </div>
                     <div class="footer">
-                        <form action="<?= $link->url('addComment') ?>" method="post" style="display:flex; gap:0.5rem; align-items:center; width:100%;">
-                            <input type="hidden" name="postId" value="<?= (int)($post->getId() ?? 0) ?>" />
-                            <input type="text" name="content" placeholder="Napíšte komentár..." style="flex:1;" />
-                            <button type="submit">Odoslať</button>
-                        </form>
+                        <?php if ($user->isLoggedIn()) { ?>
+                            <form action="<?= $link->url('addComment') ?>" method="post" style="display:flex; gap:0.5rem; align-items:center; width:100%;">
+                                <input type="hidden" name="postId" value="<?= (int)($post->getId() ?? 0) ?>" />
+                                <input type="text" name="content" placeholder="Napíšte komentár..." style="flex:1;" />
+                                <button type="submit">Odoslať</button>
+                            </form>
+                        <?php } else { ?>
+                            <div style="font-size:0.9rem; color:#555;">
+                                Pre pridanie komentára sa prosím <a href="<?= App\Configuration::LOGIN_URL ?>">prihláste</a>.
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </article>

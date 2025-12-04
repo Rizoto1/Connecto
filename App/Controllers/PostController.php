@@ -107,6 +107,12 @@ class PostController extends BaseController
             return $this->redirect($this->url('index'));
         }
 
+        // Enforce authentication: guests cannot add comments
+        if (!$this->user->isLoggedIn()) {
+            // Redirect to login URL defined in configuration
+            return $this->redirect(\App\Configuration::LOGIN_URL);
+        }
+
         $postId = (int)($request->post()['postId'] ?? 0);
         $content = trim((string)($request->post()['content'] ?? ''));
 
@@ -126,21 +132,18 @@ class PostController extends BaseController
         /** @var Comment $comment */
         $comment = new Comment();
         $comment->setPostId($postId);
-        // attach user if logged in
-        if ($this->user->isLoggedIn()) {
-            $uid = $this->user->getIdentity()?->getId();
-            if (is_int($uid)) {
-                $comment->setUserId($uid);
-            }
+        // attach user (we already know user is logged in)
+        $uid = $this->user->getIdentity()?->getId();
+        if (is_int($uid)) {
+            $comment->setUserId($uid);
         }
         $comment->setContent($content);
-        // createdAt column is present per schema
         if (method_exists($comment, 'setCreatedAt')) {
             $comment->setCreatedAt(date('Y-m-d H:i:s'));
         }
         $comment->save();
 
-        // Redirect back to posts list (preserves controller default index)
         return $this->redirect($this->url('index'));
     }
 }
+
