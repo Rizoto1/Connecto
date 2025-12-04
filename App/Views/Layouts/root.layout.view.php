@@ -29,8 +29,8 @@
             </button>
             <!-- Left: Logo -->
             <div class="col-4 col-md-3 d-flex justify-content-start align-items-center">
-                <a class="navbar-brand" href="<?= $link->url('home.index') ?>" style="width:100px;">
-                    <img src="<?= $link->asset('images/connecto_logo.png') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Framework Logo" style="height:40px; width:100px; object-fit:contain;">
+                <a class="navbar-brand" href="<?= $link->url('home.index') ?>"">
+                    <img src="<?= $link->asset('images/connecto_logo.png') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Framework Logo">
                 </a>
             </div>
             <!-- Center: Search bar -->
@@ -52,7 +52,7 @@
                     <?php if (!empty($avatar)) { ?>
                         <button type="button">
                             <a class="nav-link" href="<?= $link->url('profile.index') ?>">
-                                <img src="<?= $link->asset($avatar) ?>" alt="Avatar" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" class="me-2" />
+                                <img src="<?= $link->asset($avatar) ?>" class="profile-picture"/>
                             </a>
                         </button>
 

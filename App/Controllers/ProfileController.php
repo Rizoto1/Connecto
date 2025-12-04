@@ -10,8 +10,6 @@ use Framework\Http\Responses\Response;
 
 class ProfileController extends BaseController
 {
-
-
     public function index(Request $request): Response
     {
         // Require logged in user

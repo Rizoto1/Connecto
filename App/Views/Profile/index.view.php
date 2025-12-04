@@ -22,13 +22,13 @@
                     </div>
                 <?php } ?>
 
-                <form method="post" enctype="multipart/form-data">
+                <form id="profileForm" method="post" enctype="multipart/form-data">
                     <!-- Username row -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                             <div>
                                 <div class="fw-semibold">Používateľské meno</div>
-                                <div class="text-muted">"<?= htmlspecialchars($user->getName() ?? '') ?>"</div>
+                                <div class="text-muted"><?= htmlspecialchars($user->getName() ?? '') ?></div>
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm" onclick="toggleEdit('username')">Zmeniť</button>
                         </div>
@@ -43,7 +43,7 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                             <div>
                                 <div class="fw-semibold">E‑mail</div>
-                                <div class="text-muted">"<?= htmlspecialchars($user->getEmail() ?? '') ?>"</div>
+                                <div class="text-muted"><?= htmlspecialchars($user->getEmail() ?? '') ?></div>
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm" onclick="toggleEdit('email')">Zmeniť</button>
                         </div>
@@ -58,7 +58,7 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                             <div>
                                 <div class="fw-semibold">Heslo</div>
-                                <div class="text-muted">"********"</div>
+                                <div class="text-muted">********</div>
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm" onclick="toggleEdit('password')">Zmeniť</button>
                         </div>
@@ -72,17 +72,14 @@
                     <!-- Avatar row -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex flex-column gap-2" style="min-width:180px;">
+                                <div class="fw-semibold">Profilová fotka</div>
                                 <?php $avatar = $user->getAvatar(); ?>
                                 <?php if (!empty($avatar)) { ?>
-                                    <img src="<?= $link->asset($avatar) ?>" alt="Avatar" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">
+                                    <img src="<?= $link->asset($avatar) ?>" class="profile-picture" alt="Profilová fotka">
                                 <?php } else { ?>
                                     <div class="text-muted">Bez fotky</div>
                                 <?php } ?>
-                                <div>
-                                    <div class="fw-semibold">Profilová fotka</div>
-                                    <div class="text-muted">"<?= !empty($avatar) ? htmlspecialchars(basename($avatar)) : '—' ?>"</div>
-                                </div>
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm" onclick="toggleEdit('avatar')">Zmeniť</button>
                         </div>
@@ -94,23 +91,17 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button type="submit" name="submit" value="1" class="btn btn-primary">Uložiť zmeny</button>
+                        <button id="saveBtn" type="submit" name="submit" value="1" class="btn btn-primary" disabled aria-disabled="true">Uložiť zmeny</button>
                     </div>
                 </form>
+
+                <!-- New: link to user's posts -->
+                <div class="mt-3 d-flex">
+                    <a href="<?= $link->url('post') ?>" class="btn btn-secondary">Moje príspevky</a>
+                </div>
+
+                <!-- Profile form interaction moved to public/js/script.js -->
             </div>
         </div>
     </div>
 </div>
-
-<script>
-function toggleEdit(field) {
-    var el = document.getElementById('edit-' + field);
-    if (!el) return;
-    var isHidden = el.style.display === 'none' || el.style.display === '';
-    el.style.display = isHidden ? 'block' : 'none';
-    if (isHidden) {
-        var input = el.querySelector('input, textarea, select');
-        if (input) { input.focus(); }
-    }
-}
-</script>
