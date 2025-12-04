@@ -4,7 +4,7 @@
 ?>
 <h2>Zoznam príspevkov</h2>
 
-<div class="posts-list post-style">
+<div class="posts-list post-window">
     <?php if (!empty($posts)): ?>
         <?php foreach ($posts as $post): ?>
             <article class="post-item" style="border:1px solid #ddd; padding:1rem; margin-bottom:1rem;">
@@ -34,6 +34,18 @@
 
                 <div class="post-content">
                     <?= nl2br(htmlspecialchars($post->getContent() ?? '')) ?>
+                </div>
+
+                <!-- Right-side comment window -->
+                <div class="comment-window" aria-hidden="true">
+                    <div class="header">Komentáre</div>
+                    <div class="body">
+                        <p>Zatiaľ žiadne komentáre.</p>
+                    </div>
+                    <div class="footer">
+                        <input type="text" placeholder="Napíšte komentár..." style="flex:1;" />
+                        <button type="button">Odoslať</button>
+                    </div>
                 </div>
             </article>
         <?php endforeach; ?>

@@ -1,4 +1,4 @@
-.post-style {
+.post-window {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,9 +14,58 @@
 
 /* Smooth shift for post items */
 .post-item {
+    position: relative;
     transition: transform 200ms ease;
+    z-index: 1; /* keep post above if overlapping */
 }
 
-.post-item.shift-left {
-    transform: translateX(-20px);
+/* Keep for future use, but not used for comments now */
+.post-item.shift-left { transform: translateX(-70%); }
+.post-item.shift-right { transform: translateX(90%); }
+
+/* Comment window that slides outward to the right */
+.comment-window {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* Initially aligned with the left edge of the post */
+    transform: translateX(0);
+    transition: transform 200ms ease, opacity 200ms ease;
+    width: 85%;
+    max-width: 400px;
+    height: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    opacity: 0; /* hidden by default */
+    padding: 0.75rem;
+    z-index: 0; /* behind the post if overlapping */
+    pointer-events: none; /* non-interactive when closed */
+}
+
+/* When open, slide further to the right (outside the post) */
+.comment-window.open {
+    transform: translateX(140%);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Simple header inside the window */
+.comment-window .header {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+/* Scroll area for comments */
+.comment-window .body {
+    max-height: 300px;
+    overflow: auto;
+}
+
+/* Footer input */
+.comment-window .footer {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }

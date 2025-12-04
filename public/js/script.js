@@ -3,19 +3,23 @@
 // Event delegation for performance and to handle dynamically loaded posts
 
 document.addEventListener('click', (e) => {
-    console.log("Testing click event");
     const target = e.target;
 
-    // Teraz hľadáme button, nie a-tag
+    // Hľadáme button v toolbar-e daného príspevku
     const commentButton = target.closest('.post-toolbar button');
     if (commentButton) {
         const postItem = commentButton.closest('.post-item');
         if (postItem) {
+            // Toggle post shift-left to make visual space
             postItem.classList.toggle('shift-left');
-            console.log("Shift triggered");
+
+            // Toggle the comment window inside this post
+            const commentWindow = postItem.querySelector('.comment-window');
+            if (commentWindow) {
+                const isOpen = commentWindow.classList.toggle('open');
+                commentWindow.setAttribute('aria-hidden', String(!isOpen));
+            }
         }
         e.preventDefault();
     }
 });
-
-
