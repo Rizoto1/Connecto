@@ -1,0 +1,13 @@
+.post-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.post-image {
+    width: 400px;
+    height: auto;
+    border-radius: 15px;
+}
