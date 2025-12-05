@@ -98,12 +98,24 @@ class PostController extends BaseController
 
     public function delete(Request $request): Response
     {
+        // Must be logged in
+        if (!$this->user->isLoggedIn()) {
+            return $this->redirect(\App\Configuration::LOGIN_URL);
+        }
+        // Only accept POST for deletion
+        if (!$request->isPost()) {
+            return $this->redirect($this->url('profile.post'));
+        }
+
         $id = (int)($request->post()['id'] ?? 0);
-        $post = Post::getOne($id);
-        if ($post) {
+        $post = $id > 0 ? Post::getOne($id) : null;
+        $uid = $this->user->getIdentity()?->getId();
+
+        if ($post && is_int($uid) && $post->getUserId() === $uid) {
             $post->delete();
         }
-        return $this->redirect($this->url('index'));
+        // Redirect back to profile posts listing
+        return $this->redirect($this->url('profile.post'));
     }
 
     // New action: add a comment to a post
@@ -151,5 +163,81 @@ class PostController extends BaseController
 
         return $this->redirect($this->url('index'));
     }
-}
 
+    // Edit post (GET shows form, POST updates)
+    public function edit(Request $request): Response
+    {
+        // Require login
+        if (!$this->user->isLoggedIn()) {
+            return $this->redirect(\App\Configuration::LOGIN_URL);
+        }
+
+        // Resolve ID from GET first (for initial load), then POST
+        $id = (int)($request->get()['id'] ?? ($request->post()['id'] ?? 0));
+        if ($id <= 0) {
+            return $this->redirect($this->url('profile.post'));
+        }
+        $post = Post::getOne($id);
+        if ($post === null) {
+            return $this->redirect($this->url('profile.post'));
+        }
+
+        // Ownership check
+        $uid = $this->user->getIdentity()?->getId();
+        if (!is_int($uid) || $post->getUserId() !== $uid) {
+            return $this->redirect($this->url('profile.post'));
+        }
+
+        if ($request->isPost()) {
+            $title = trim((string)($request->post()['title'] ?? ''));
+            $content = trim((string)($request->post()['content'] ?? ''));
+            $errors = [];
+            if ($title === '') {
+                $errors[] = 'Title is required';
+            }
+            if ($content === '') {
+                $errors[] = 'Content is required';
+            }
+
+            // Optional: replace image if new uploaded
+            $uploaded = $request->file('image');
+            if ($uploaded !== null && $uploaded->isOk()) {
+                $type = strtolower($uploaded->getType());
+                if (!str_starts_with($type, 'image/')) {
+                    $errors[] = 'Uploaded file must be an image';
+                } else {
+                    $uploadsDir = __DIR__ . '/../../public/uploads';
+                    if (!is_dir($uploadsDir)) {
+                        @mkdir($uploadsDir, 0777, true);
+                    }
+                    $ext = pathinfo($uploaded->getName(), PATHINFO_EXTENSION);
+                    $safeExt = preg_replace('/[^a-z0-9]+/i', '', $ext) ?: 'img';
+                    $fileName = uniqid('post_', true) . '.' . $safeExt;
+                    $targetPath = $uploadsDir . DIRECTORY_SEPARATOR . $fileName;
+                    if ($uploaded->store($targetPath)) {
+                        $post->setImage('uploads/' . $fileName);
+                    } else {
+                        $errors[] = 'Failed to store uploaded image';
+                    }
+                }
+            } elseif ($uploaded !== null && !$uploaded->isOk()) {
+                $msg = $uploaded->getErrorMessage();
+                if ($uploaded->getError() !== UPLOAD_ERR_NO_FILE && $msg) {
+                    $errors[] = $msg;
+                }
+            }
+
+            if ($errors) {
+                return $this->html(['errors' => $errors, 'post' => $post], 'edit');
+            }
+
+            $post->setTitle($title);
+            $post->setContent($content);
+            $post->save();
+
+            return $this->redirect($this->url('profile.post'));
+        }
+
+        return $this->html(['post' => $post], 'edit');
+    }
+}

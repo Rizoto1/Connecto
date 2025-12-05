@@ -24,8 +24,15 @@
                                         <img src="<?= htmlspecialchars($link->asset($post->getImage())) ?>" alt="post image" style="max-width:100%; height:auto;" />
                                     </div>
                                 <?php } ?>
-                                <div class="post-content">
+                                <div class="post-content mb-2">
                                     <?= nl2br(htmlspecialchars($post->getContent() ?? '')) ?>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <a href="<?= $link->url('post.edit', ['id' => $post->getId()]) ?>" class="btn btn-sm btn-outline-primary">Upraviť</a>
+                                    <form method="post" action="<?= $link->url('post.delete') ?>" onsubmit="return confirm('Naozaj chcete vymazať tento príspevok?');">
+                                        <input type="hidden" name="id" value="<?= (int)$post->getId() ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Vymazať</button>
+                                    </form>
                                 </div>
                             </article>
                         <?php } ?>

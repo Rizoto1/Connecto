@@ -20,7 +20,7 @@
 
 <body data-logged-in="<?= $user->isLoggedIn() ? '1' : '0' ?>" data-login-url="<?= htmlspecialchars(App\Configuration::LOGIN_URL) ?>">
 
-<nav class="navbar navbar-expand-sm bg-light">
+<nav class="navbar navbar-expand-sm bg-light sticky-top">
     <div class="container-fluid">
         <div class="row w-100 align-items-center">
             <!-- Sidebar toggle button for mobile -->
@@ -29,7 +29,7 @@
             </button>
             <!-- Left: Logo -->
             <div class="col-4 col-md-3 d-flex justify-content-start align-items-center">
-                <a class="navbar-brand" href="<?= $link->url('home.index') ?>"">
+                <a class="navbar-brand" href="<?= $link->url('home.index') ?>">
                     <img src="<?= $link->asset('images/connecto_logo.png') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Framework Logo">
                 </a>
             </div>
@@ -52,7 +52,7 @@
                     <?php if (!empty($avatar)) { ?>
                         <button type="button">
                             <a class="nav-link" href="<?= $link->url('profile.index') ?>">
-                                <img src="<?= $link->asset($avatar) ?>" class="profile-picture"/>
+                                <img src="<?= $link->asset($avatar) ?>" class="profile-picture" alt="Profile picture"/>
                             </a>
                         </button>
 
